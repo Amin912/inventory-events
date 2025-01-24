@@ -7,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton(NpgsqlDataSource.Create(builder.Configuration.GetConnectionString("Postgres")!));
 builder.Services.AddSingleton<EventStore>();
 builder.Services.AddSingleton<InventoryCommands>();
+builder.Services.AddSingleton(KafkaSetup.CreateProducer(builder.Configuration));
+builder.Services.AddHostedService<OutboxPublisher>();
 
 var app = builder.Build();
 
@@ -39,6 +41,7 @@ app.MapGet("/products/{productId}/events", async (string productId, EventStore s
     Results.Ok(await store.LoadAsync(productId)));
 
 await app.Services.GetRequiredService<EventStore>().CreateSchemaAsync();
+await KafkaSetup.EnsureTopicAsync(app.Configuration);
 app.Run();
 
 static async Task<IResult> Handle(Func<Task<IResult>> action)
