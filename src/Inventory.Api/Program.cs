@@ -1,6 +1,8 @@
 using Inventory.Api;
 using Inventory.Domain;
+using Inventory.ReadModel;
 using Npgsql;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,9 @@ builder.Services.AddSingleton<EventStore>();
 builder.Services.AddSingleton<InventoryCommands>();
 builder.Services.AddSingleton(KafkaSetup.CreateProducer(builder.Configuration));
 builder.Services.AddHostedService<OutboxPublisher>();
+builder.Services.AddSingleton<IConnectionMultiplexer>(
+    ConnectionMultiplexer.Connect(builder.Configuration["Redis:Configuration"]!));
+builder.Services.AddSingleton<ProductViews>();
 
 var app = builder.Build();
 
@@ -35,6 +40,13 @@ app.MapDelete("/products/{productId}/reservations/{orderId}", async (string prod
     var events = await commands.HandleAsync(productId, stock => stock.Release(orderId));
     return events.Count > 0 ? Results.NoContent() : Results.NotFound();
 });
+
+// Reads come from the Redis read model, which the projector updates from
+// Kafka. It lags the writes by a moment.
+app.MapGet("/products", async (ProductViews views) => Results.Ok(await views.ListAsync()));
+
+app.MapGet("/products/{productId}", async (string productId, ProductViews views) =>
+    await views.GetAsync(productId) is { } view ? Results.Ok(view) : Results.NotFound());
 
 // The raw event stream of a product: everything that ever happened to it.
 app.MapGet("/products/{productId}/events", async (string productId, EventStore store) =>

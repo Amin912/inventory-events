@@ -4,6 +4,6 @@
     <PackageReference Include="Npgsql" Version="8.0.5" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Inventory.Domain\Inventory.Domain.csproj" />
+    <ProjectReference Include="..\Inventory.ReadModel\Inventory.ReadModel.csproj" />
   </ItemGroup>
 </Project>
