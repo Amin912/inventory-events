@@ -9,4 +9,13 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(
 builder.Services.AddSingleton<ProductViews>();
 builder.Services.AddHostedService<ProjectionWorker>();
 
-builder.Build().Run();
+var host = builder.Build();
+
+// `--rebuild` replays the whole log into a fresh read model, then exits.
+if (args.Contains("--rebuild"))
+{
+    await Rebuild.RunAsync(host.Services, builder.Configuration);
+    return;
+}
+
+host.Run();
