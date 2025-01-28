@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory.ReadModel", "src\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory.Projector", "src\Inventory.Projector\Inventory.Projector.csproj", "{B4DA6C60-3BFD-4696-81B7-C57FF7D3921D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory.IntegrationTests", "tests\Inventory.IntegrationTests\Inventory.IntegrationTests.csproj", "{4D71C1BC-293F-44F8-8677-81AC40F0DD6B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +48,10 @@ Global
 		{B4DA6C60-3BFD-4696-81B7-C57FF7D3921D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4DA6C60-3BFD-4696-81B7-C57FF7D3921D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B4DA6C60-3BFD-4696-81B7-C57FF7D3921D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D71C1BC-293F-44F8-8677-81AC40F0DD6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D71C1BC-293F-44F8-8677-81AC40F0DD6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D71C1BC-293F-44F8-8677-81AC40F0DD6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D71C1BC-293F-44F8-8677-81AC40F0DD6B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{B057FC6B-B552-44F2-B86D-702FEDE65D76} = {B761B0A8-C1C3-4192-9E42-2B697BAF3E45}
@@ -53,5 +59,6 @@ Global
 		{E7F1CE03-325D-436C-AEE8-C70FA99B9E3E} = {B761B0A8-C1C3-4192-9E42-2B697BAF3E45}
 		{E21C54D3-0B80-4015-B7FE-E66917FF2EFD} = {B761B0A8-C1C3-4192-9E42-2B697BAF3E45}
 		{B4DA6C60-3BFD-4696-81B7-C57FF7D3921D} = {B761B0A8-C1C3-4192-9E42-2B697BAF3E45}
+		{4D71C1BC-293F-44F8-8677-81AC40F0DD6B} = {C6F9A771-9D22-4F76-89AE-EA03A59F4389}
 	EndGlobalSection
 EndGlobal

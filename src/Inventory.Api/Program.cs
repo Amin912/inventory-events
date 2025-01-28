@@ -66,6 +66,10 @@ static async Task<IResult> Handle(Func<Task<IResult>> action)
     {
         return Results.BadRequest(new { error = e.Message });
     }
+    catch (ConcurrencyException)
+    {
+        return Results.Conflict(new { error = "The product is busy, please try again." });
+    }
 }
 
 public sealed record AddStockRequest(int Quantity);

@@ -8,7 +8,8 @@ namespace Inventory.Api;
 // with the fresh history.
 public sealed class InventoryCommands(EventStore store)
 {
-    private const int MaxAttempts = 5;
+    // Under contention only one writer wins each round, so allow plenty.
+    private const int MaxAttempts = 20;
 
     public async Task<IReadOnlyList<InventoryEvent>> HandleAsync(
         string productId, Func<ProductStock, IReadOnlyList<InventoryEvent>> decide, CancellationToken ct = default)
@@ -29,6 +30,9 @@ public sealed class InventoryCommands(EventStore store)
             }
             catch (ConcurrencyException) when (attempt < MaxAttempts)
             {
+                // A short random pause, so writers that collided don't all
+                // retry at the same moment and collide again.
+                await Task.Delay(Random.Shared.Next(1, 5 * attempt), ct);
             }
         }
     }
